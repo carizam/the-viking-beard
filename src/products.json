@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "title": "Reuzel Shampoo Daily",
+    "description": "El champú diario Reuzel está impregnado con nuestra mezcla tónica T4 de hamamelis, hoja de ortiga, romero y raíz de cola de caballo y es ideal para todo tipo de cabello y uso frecuente. Puede utilizar este producto como la parte final de nuestra fórmula desengrasante de tres partes.",
+    "code": "R1",
+    "price": 7.5,
+    "status": true,
+    "stock": 100,
+    "category": "Cabello",
+    "thumbnails": "https://m.media-amazon.com/images/I/81O2I9QLz6L._SL1500_.jpg"
+  },
+  {
+    "id": "2",
+    "title": "Reuzel Grooming Tonic",
+    "description": "Crea una sensación duradera y natural para todo tipo de cabello. Perfecto para secar con secadora y protege el cabello del peinado térmico. La mezcla tónica T-4 de hamamelis de bruja, hoja de ortiga, romero y raíz de cola de caballo es ideal para todo tipo de cabello y uso frecuente.",
+    "code": "R2",
+    "price": 19.95,
+    "status": true,
+    "stock": 100,
+    "category": "Cabello",
+    "thumbnails": "https://m.media-amazon.com/images/I/61jghcwYqxL._SL1500_.jpg"
+  }
+]
