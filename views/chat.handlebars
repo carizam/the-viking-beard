@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat de Viking Beard</title>
+    <style>
+        #message-container {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #message-form {
+            display: flex;
+        }
+
+        #message-form input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat de Viking Beard</h1>
+    <div id="message-container">
+        {{#each messages}}
+            <div class="message">
+                <strong>{{this.user}}:</strong> {{this.message}}
+            </div>
+        {{/each}}
+    </div>
+    <form id="message-form">
+        <input type="text" id="message-input" placeholder="Escribe tu mensaje aquí..." required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Enviar un nuevo mensaje
+        document.getElementById('message-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message) {
+                socket.emit('newMessage', { user: 'Usuario', message: message });
