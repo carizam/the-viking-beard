@@ -20,5 +20,27 @@
     "stock": 100,
     "category": "Cabello",
     "thumbnails": "https://m.media-amazon.com/images/I/61jghcwYqxL._SL1500_.jpg"
+  },
+  {
+    "id": "3",
+    "title": "Reuzel Grooming Tonic",
+    "description": "Crea una sensación duradera y natural para todo tipo de cabello. Perfecto para secar con secadora y protege el cabello del peinado térmico. La mezcla tónica T-4 de hamamelis de bruja, hoja de ortiga, romero y raíz de cola de caballo es ideal para todo tipo de cabello y uso frecuente.",
+    "code": "R3",
+    "price": 19.95,
+    "status": true,
+    "stock": 100,
+    "category": "Cabello",
+    "thumbnails": "https://m.media-amazon.com/images/I/61jghcwYqxL._SL1500_.jpg"
+  },
+  {
+    "id": "4",
+    "title": "Reuzel Grooming Tonic - K",
+    "description": "Crea una sensación duradera y natural para todo tipo de cabello. Perfecto para secar con secadora y protege el cabello del peinado térmico. La mezcla tónica T-4 de hamamelis de bruja, hoja de ortiga, romero y raíz de cola de caballo es ideal para todo tipo de cabello y uso frecuente.",
+    "code": "R3",
+    "price": 19.95,
+    "status": true,
+    "stock": 100,
+    "category": "Cabello",
+    "thumbnails": "https://m.media-amazon.com/images/I/61jghcwYqxL._SL1500_.jpg"
   }
 ]
