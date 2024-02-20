@@ -13,8 +13,6 @@ mongoose
   .connect(mongoDBAtlasUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
   .then(() => console.log("MongoDB connected..."))
   .catch((err) => console.error(err));
