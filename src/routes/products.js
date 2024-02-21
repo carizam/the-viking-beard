@@ -1,72 +1,46 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../dao/models/product");
+const Product = require("../models/product");
 
-// Obtener todos los productos
+// Paginación, filtrado y ordenación
 router.get("/", async (req, res) => {
   try {
-    const productos = await Product.find();
-    res.json(productos);
-  } catch (error) {
-    res.status(500).send("Error al leer los productos: " + error.message);
-  }
-});
+    let { limit, page, sort, query } = req.query;
 
-// Obtener producto por ID
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const producto = await Product.findById(id);
-    if (producto) {
-      res.json(producto);
-    } else {
-      res.status(404).send("Producto no encontrado");
-    }
-  } catch (error) {
-    res.status(500).send("Error al leer los productos: " + error.message);
-  }
-});
+    limit = parseInt(limit) || 10;
+    page = parseInt(page) || 1;
+    sort = sort || "";
 
-// Crear un nuevo producto
-router.post("/", async (req, res) => {
-  try {
-    const nuevoProducto = new Product(req.body);
-    const productoGuardado = await nuevoProducto.save();
-    res.status(201).json(productoGuardado);
-  } catch (error) {
-    res.status(500).send("Error al guardar el producto: " + error.message);
-  }
-});
+    let filterOptions = query ? { name: new RegExp(query, "i") } : {};
+    let sortOptions =
+      sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : {};
 
-// Actualizar producto por ID
-router.put("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const productoActualizado = await Product.findByIdAndUpdate(id, req.body, {
-      new: true,
+    const productos = await Product.find(filterOptions)
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort(sortOptions);
+
+    const totalItems = await Product.countDocuments(filterOptions);
+    const totalPages = Math.ceil(totalItems / limit);
+
+    res.json({
+      status: "success",
+      payload: productos,
+      totalPages: totalPages,
+      prevPage: page > 1 ? page - 1 : null,
+      nextPage: page < totalPages ? page + 1 : null,
+      page: page,
+      hasPrevPage: page > 1,
+      hasNextPage: page < totalPages,
+      prevLink:
+        page > 1 ? `/api/products?page=${page - 1}&limit=${limit}` : null,
+      nextLink:
+        page < totalPages
+          ? `/api/products?page=${page + 1}&limit=${limit}`
+          : null,
     });
-    if (productoActualizado) {
-      res.json(productoActualizado);
-    } else {
-      res.status(404).send("Producto no encontrado");
-    }
   } catch (error) {
-    res.status(500).send("Error al actualizar el producto: " + error.message);
-  }
-});
-
-// Eliminar producto por ID
-router.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const productoEliminado = await Product.findByIdAndRemove(id);
-    if (productoEliminado) {
-      res.send("Producto eliminado");
-    } else {
-      res.status(404).send("Producto no encontrado");
-    }
-  } catch (error) {
-    res.status(500).send("Error al eliminar el producto: " + error.message);
+    res.status(500).send("Error al leer los productos: " + error.message);
   }
 });
 
