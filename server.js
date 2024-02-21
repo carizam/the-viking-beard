@@ -7,7 +7,6 @@ const app = express();
 app.use(express.json()); // Middleware para parsear JSON
 
 // Configuración de Mongoose para conectarse a MongoDB Atlas
-
 const password = encodeURIComponent("HYPO987");
 const mongoDBAtlasUri = `mongodb+srv://ciarizam:${password}@vikingbearddb.12u8the.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -27,11 +26,11 @@ mongoose.connection.on("reconnected", () => {
   console.log("MongoDB reconnected!");
 });
 
-// Rutas para productos
-app.use("/api/products", productsRoutes);
-
 // Rutas para carritos
 app.use("/api/carts", cartsRoutes);
+
+// Rutas para productos
+app.use("/api/products", productsRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 8080;

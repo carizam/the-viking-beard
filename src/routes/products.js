@@ -2,18 +2,39 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/product");
 
-// Paginación, filtrado y ordenación
+// Paginación
 router.get("/", async (req, res) => {
   try {
-    let { limit, page, sort, query } = req.query;
+    let { limit, page, sort, query, category, available } = req.query;
 
     limit = parseInt(limit) || 10;
     page = parseInt(page) || 1;
-    sort = sort || "";
 
+    // Filtros base
     let filterOptions = query ? { name: new RegExp(query, "i") } : {};
-    let sortOptions =
-      sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : {};
+
+    // Filtrar por categoría si se proporciona
+    if (category) {
+      filterOptions.category = category;
+    }
+
+    // Filtrar por disponibilidad si se proporciona
+    if (available !== undefined) {
+      filterOptions.available = available === "true";
+    }
+
+    // Opciones de ordenación mejoradas
+    let sortOptions = {};
+    if (sort) {
+      switch (sort.toLowerCase()) {
+        case "price_asc": // Ordenar por precio ascendente
+          sortOptions.price = 1;
+          break;
+        case "price_desc": // Ordenar por precio descendente
+          sortOptions.price = -1;
+          break;
+      }
+    }
 
     const productos = await Product.find(filterOptions)
       .limit(limit)
