@@ -1,18 +1,17 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const productsRoutes = require("./src/routes/products");
-const cartsRoutes = require("./src/routes/carts");
+const cartsRoutes = require("./src/dao/models/cart");
 const app = express();
-require("dotenv").config();
 
 app.use(express.json()); // Middleware para parsear JSON
 
-// Configuración de Mongoose para conectarse a MongoDB Atlas
 const password = encodeURIComponent(process.env.DB_PASS);
-const mongoDBAtlasUri = `mongodb+srv://${process.env.DB_USER}:${password}@${process.env.DB_HOST}/?retryWrites=true&w=majority`;
+const mongoDBAtlasUri = `mongodb+srv://${process.env.DB_USER}:${password}@${process.env.DB_HOST}/mydatabase?retryWrites=true&w=majority`;
 
 mongoose
-  .connect(mongoDBAtlasUri)
+  .connect(mongoDBAtlasUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected..."))
   .catch((err) => console.error("MongoDB connection error:", err));
 

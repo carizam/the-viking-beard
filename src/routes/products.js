@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../../models/product");
+const Product = require("/Users/ciarizam/Documents/The-Viking-Beard/src/dao/models/product.js");
 
 // Paginación
 router.get("/", async (req, res) => {
