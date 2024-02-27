@@ -1,0 +1,30 @@
+# Dependencias
+node_modules/
+
+# Env files
+.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Directorios de IDE/editor
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Archivos de bloqueo de paquetes (descomenta si decides ignorarlos)
+# package-lock.json
+# yarn.lock
+
+# Directorio de salida de compilación
+/dist
+
+# Archivos de compilación de TypeScript
+*.tsbuildinfo

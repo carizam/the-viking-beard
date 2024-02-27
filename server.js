@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const productsRoutes = require("./src/routes/products");
 const cartsRoutes = require("./src/routes/carts");
 const app = express();
+require("dotenv").config();
 
 app.use(express.json()); // Middleware para parsear JSON
 
 // Configuración de Mongoose para conectarse a MongoDB Atlas
-const password = encodeURIComponent("HYPO987");
-const mongoDBAtlasUri = `mongodb+srv://ciarizam:${password}@vikingbearddb.12u8the.mongodb.net/?retryWrites=true&w=majority`;
+const password = encodeURIComponent(process.env.DB_PASS);
+const mongoDBAtlasUri = `mongodb+srv://${process.env.DB_USER}:${password}@${process.env.DB_HOST}/?retryWrites=true&w=majority`;
 
 mongoose
   .connect(mongoDBAtlasUri)
