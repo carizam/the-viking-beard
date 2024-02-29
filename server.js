@@ -5,6 +5,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const productsRoutes = require("./src/routes/products");
 const cartsRoutes = require("./src/routes/carts");
+const authRoutes = require("./src/routes/auth");
 const app = express();
 
 app.use(express.json()); // Middleware para parsear JSON
@@ -56,6 +57,12 @@ app.use("/api/carts", cartsRoutes);
 
 // Rutas para productos
 app.use("/api/products", productsRoutes);
+
+// Ritas de autentication
+app.use("/", authRoutes);
+
+//Rutas de vistas
+app.use("/", viewRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 8080;
