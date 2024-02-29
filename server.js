@@ -1,11 +1,23 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const productsRoutes = require("./src/routes/products");
 const cartsRoutes = require("./src/routes/carts");
 const app = express();
 
 app.use(express.json()); // Middleware para parsear JSON
+
+// Configuración de la sesión
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+  })
+);
 
 try {
   const password = encodeURIComponent(process.env.DB_PASS);
