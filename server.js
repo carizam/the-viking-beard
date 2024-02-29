@@ -2,28 +2,41 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const productsRoutes = require("./src/routes/products");
-const cartsRoutes = require("./src/dao/models/cart");
+const cartsRoutes = require("./src/routes/carts");
 const app = express();
 
 app.use(express.json()); // Middleware para parsear JSON
 
-const password = encodeURIComponent(process.env.DB_PASS);
-const mongoDBAtlasUri = `mongodb+srv://${process.env.DB_USER}:${password}@${process.env.DB_HOST}/mydatabase?retryWrites=true&w=majority`;
+try {
+  const password = encodeURIComponent(process.env.DB_PASS);
 
-mongoose
-  .connect(mongoDBAtlasUri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected..."))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
+    throw new Error("Error en las variables DB_USER, DB_PASS y DB_HOST");
+  }
 
-// Opcional: Manejo de errores de conexión inicial y reconexión
-mongoose.connection.on("error", (err) => {
-  console.error(`MongoDB connection error: ${err}`);
-  process.exit(-1); // Opcional: termina el proceso en caso de un error de conexión
+  // Construye la URI de conexión a MongoDB
+  const mongoDBAtlasUri = `mongodb+srv://${process.env.DB_USER}:${password}@${process.env.DB_HOST}/mydatabase?retryWrites=true&w=majority`;
+
+  mongoose.connect(mongoDBAtlasUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+} catch (err) {
+  console.error("Error al configurar la conexión a MongoDB:", err);
+  process.exit(1);
+}
+
+mongoose.connection.on("connected", () => {
+  console.log("Conexión a MongoDB establecida con éxito");
 });
-
-// Opcional: Evento de reconexión (útil para el seguimiento)
+mongoose.connection.on("error", (err) => {
+  console.error("Error en la conexión a MongoDB:", err);
+});
+mongoose.connection.on("disconnected", () => {
+  console.log("Desconectado de MongoDB");
+});
 mongoose.connection.on("reconnected", () => {
-  console.log("MongoDB reconnected!");
+  console.log("Reconectado a MongoDB");
 });
 
 // Rutas para carritos

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Cart = require("../models/cart"); // Asegúrate de que la ruta al modelo Cart es correcta
+const Cart = require("../models/cart");
 
 // Eliminar un producto del carrito
 router.delete("/:cid/products/:pid", async (req, res) => {
