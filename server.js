@@ -3,10 +3,16 @@ const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const handlebars = require("express-handlebars");
 const productsRoutes = require("./src/routes/products");
 const cartsRoutes = require("./src/routes/carts");
 const authRoutes = require("./src/routes/auth");
+const viewRoutes = require("./src/routes/viewRoutes");
 const app = express();
+
+app.engine("handlebars", handlebars());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
 app.use(express.json()); // Middleware para parsear JSON
 
@@ -22,14 +28,10 @@ app.use(
 
 try {
   const password = encodeURIComponent(process.env.DB_PASS);
-
   if (!process.env.DB_USER || !process.env.DB_PASS || !process.env.DB_HOST) {
     throw new Error("Error en las variables DB_USER, DB_PASS y DB_HOST");
   }
-
-  // Construye la URI de conexión a MongoDB
   const mongoDBAtlasUri = `mongodb+srv://${process.env.DB_USER}:${password}@${process.env.DB_HOST}/mydatabase?retryWrites=true&w=majority`;
-
   mongoose.connect(mongoDBAtlasUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -52,16 +54,12 @@ mongoose.connection.on("reconnected", () => {
   console.log("Reconectado a MongoDB");
 });
 
-// Rutas para carritos
+// Rutas para carritos y productos
 app.use("/api/carts", cartsRoutes);
-
-// Rutas para productos
 app.use("/api/products", productsRoutes);
 
-// Ritas de autentication
+// Rutas de autenticación y vistas
 app.use("/", authRoutes);
-
-//Rutas de vistas
 app.use("/", viewRoutes);
 
 // Iniciar servidor

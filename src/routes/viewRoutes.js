@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const isAuthenticated = require("../middleware/authMiddleware");
 
 // Ruta para la página de registro
 router.get("/register", (req, res) => {
@@ -18,5 +19,13 @@ router.get("/profile", (req, res) => {
   }
   res.render("profile", { user: req.session.user });
 });
+
+// Ruta para la página de perfil del usuario, protegida por el middleware
+router.get("/profile", isAuthenticated, (req, res) => {
+  // Si el middleware no redirige al usuario, renderiza la página de perfil
+  res.render("profile", { user: req.session.user });
+});
+
+module.exports = router;
 
 module.exports = router;
